@@ -70,6 +70,7 @@ async function makeSfdcApiCall(endpoint: string, httpMethod: HttpMethod, body?: 
 
     // extract guest cart session id from response and set it to cookie
     if (endpoint.match('carts')) {
+      console.log('cart headers', headers);
       await extractGuestCartSessionIdFromResponseHeaders(response);
     }
     const text = await response.text();
@@ -541,6 +542,9 @@ function mapPricingToProduct(product: Product, pricingResponse: PricingApiRespon
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
   console.log('getProduct');
+  if (!handle) {
+    return;
+  }
   return await fetchProductDetails(handle);
 }
 
