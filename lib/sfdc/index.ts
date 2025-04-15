@@ -172,6 +172,7 @@ export async function addToCart(
     type: lines.type,
   };
   const response = await makeSfdcApiCall(endpoint, HttpMethod.POST, requestBody);
+  console.log('addToCart response', response);
   return mapCart(response);
 }
 
@@ -209,7 +210,7 @@ export async function getCart(_: string | null): Promise<Cart | undefined> {
     makeSfdcApiCall(cartItemsEndpoint, HttpMethod.GET)
   ]);
 
-  if (!cartResponse) return undefined;
+  if (!cartResponse || cartResponse?.asyncOperationStatus ! === 'Completed') return undefined;
 
   // Map cart
   const cart: Cart = mapCart(cartResponse);
