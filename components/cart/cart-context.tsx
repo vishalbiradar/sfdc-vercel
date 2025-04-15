@@ -105,7 +105,6 @@ function createEmptyCart(): Cart {
 }
 
 function cartReducer(state: Cart | undefined, action: CartAction): Cart {
-  console.log('cartReducer');
   const currentCart = state || createEmptyCart();
 
   switch (action.type) {
@@ -154,7 +153,6 @@ export function CartProvider({
   children: React.ReactNode;
   cartPromise: Promise<Cart | undefined>;
 }) {
-  console.log('CartProvider');
   const initialCart = use(cartPromise);
   const [optimisticCart, updateOptimisticCart] = useOptimistic(initialCart, cartReducer);
 

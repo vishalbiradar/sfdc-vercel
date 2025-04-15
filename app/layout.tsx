@@ -41,8 +41,8 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   console.log('RootLayout');
 
-  const cartId = await getCartIdFromCookie();
-  const cart = getCart(cartId!);
+  // const cartId = await getCartIdFromCookie();
+  const cart = getCart(null);
 
   return (
     <html lang="en" className={GeistSans.variable}>
