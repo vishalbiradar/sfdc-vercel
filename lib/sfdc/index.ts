@@ -210,7 +210,7 @@ export async function getCart(_: string | null): Promise<Cart | undefined> {
     makeSfdcApiCall(cartItemsEndpoint, HttpMethod.GET)
   ]);
 
-  if (!cartResponse || cartResponse?.asyncOperationStatus ! === 'Completed') return undefined;
+  if (!cartResponse || cartResponse?.asyncOperationStatus !== 'Completed') return undefined;
 
   // Map cart
   const cart: Cart = mapCart(cartResponse);
