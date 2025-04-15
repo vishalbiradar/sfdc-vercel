@@ -187,23 +187,53 @@ export async function updateCart(
   return mapCart(response);
 }
 
-export async function getCart(cartId: string | null): Promise<Cart | undefined> {
+export async function getCart(_: string | null): Promise<Cart | undefined> {
   console.log('getCart API');
-  const endpoint =
-    SFDC_COMMERCE_WEBSTORE_API_URL + '/' + SFDC_COMMERCE_WEBSTORE_ID + CARTS_CURRENT_URL;
-  const response = await makeSfdcApiCall(endpoint, HttpMethod.GET);
 
-  // Old carts becomes `null` when you checkout.
-  if (!response) {
-    return undefined;
+  const cartEndpoint =
+    `${SFDC_COMMERCE_WEBSTORE_API_URL}/${SFDC_COMMERCE_WEBSTORE_ID}${CARTS_CURRENT_URL}`;
+  const cartItemsEndpoint =
+    `${SFDC_COMMERCE_WEBSTORE_API_URL}/${SFDC_COMMERCE_WEBSTORE_ID}${CARTS_CURRENT_ITEMS_URL}`;
+
+  const [cartResponse, cartItemsResponse] = await Promise.all([
+    makeSfdcApiCall(cartEndpoint, HttpMethod.GET),
+    makeSfdcApiCall(cartItemsEndpoint, HttpMethod.GET)
+  ]);
+
+  if (!cartResponse) return undefined;
+
+  // Map cart
+  const cart: Cart = mapCart(cartResponse);
+
+  // Map cart items only if response is available
+  if (cartItemsResponse?.cartItems) {
+    cart.lines = cartItemsResponse.cartItems.map((itemWrapper: any) =>
+      mapCartItem(itemWrapper.cartItem)
+    );
   }
-  const cart: Cart = mapCart(response);
-  if (cart && cart.id) {
-    const cartItem: CartItem[] = await getCartItems(cart.id);
-    cart.lines = cartItem;
-  }
+  console.log('getCart API res', cart);
   return cart;
 }
+
+
+// export async function getCart(cartId: string | null): Promise<Cart | undefined> {
+//   console.log('getCart API');
+//   const endpoint =
+//     SFDC_COMMERCE_WEBSTORE_API_URL + '/' + SFDC_COMMERCE_WEBSTORE_ID + CARTS_CURRENT_URL;
+//   const response = await makeSfdcApiCall(endpoint, HttpMethod.GET);
+
+//   // Old carts becomes `null` when you checkout.
+//   if (!response) {
+//     return undefined;
+//   }
+//   const cart: Cart = mapCart(response);
+//   if (cart && cart.id) {
+//     const cartItem: CartItem[] = await getCartItems();
+//     cart.lines = cartItem;
+//   }
+//   console.log('getCart API res', cart);
+//   return cart;
+// }
 
 function mapCart(response: any): Cart {
   const cart: Cart = {
@@ -220,7 +250,7 @@ function mapCart(response: any): Cart {
   return cart;
 }
 
-export async function getCartItems(cartId: string): Promise<CartItem[]> {
+export async function getCartItems(): Promise<CartItem[]> {
   console.log('getCartItems API');
   const endpoint =
     SFDC_COMMERCE_WEBSTORE_API_URL + '/' + SFDC_COMMERCE_WEBSTORE_ID + CARTS_CURRENT_ITEMS_URL;
