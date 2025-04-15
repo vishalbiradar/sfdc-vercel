@@ -233,6 +233,7 @@ export async function getCartItems(cartId: string): Promise<CartItem[]> {
 }
 
 function mapCartItem(apiCartItem: any): CartItem {
+  console.log('mapCartItem apiCartItem', apiCartItem);
   return {
     id: apiCartItem.cartItemId,
     quantity: parseInt(apiCartItem.quantity, 10),
