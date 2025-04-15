@@ -70,11 +70,19 @@ async function makeSfdcApiCall(endpoint: string, httpMethod: HttpMethod, body?: 
 
     // extract guest cart session id from response and set it to cookie
     if (endpoint.match('carts')) {
-      console.log('cart headers', headers);
       await extractGuestCartSessionIdFromResponseHeaders(response);
     }
     const text = await response.text();
+    if (endpoint.match('carts') && httpMethod === HttpMethod.GET) {
+      console.log('=========== ***** res start ***** ===========');
+      console.log('cart headers', headers);
+      console.log('cart endpoint', endpoint);
+      console.log('cart res', text ? JSON.parse(text) : null);
+      console.log('=========== ***** res end ***** ===========');
+      await extractGuestCartSessionIdFromResponseHeaders(response);
+    }
     return text ? JSON.parse(text) : null;
+    
   } catch (error) {
     console.error('Fetch Error:', error);
   }
