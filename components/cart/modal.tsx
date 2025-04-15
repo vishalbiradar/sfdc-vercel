@@ -28,6 +28,9 @@ export default function CartModal() {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
+
+  console.log('CartModal cart', cart);
+
   useEffect(() => {
     if (!cart || !cart?.id) {
       createCartAndSetCookie();

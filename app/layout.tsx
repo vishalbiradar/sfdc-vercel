@@ -43,6 +43,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   const cartId = await getCartIdFromCookie();
   const cart = getCart(cartId!);
+  console.log('RootLayout cart', cart)
 
   return (
     <html lang="en" className={GeistSans.variable}>
