@@ -5,22 +5,22 @@ import { NextRequest } from 'next/server';
 import { decode } from 'js-base64';
 
 export async function getSfdcAuthToken(): Promise<string | undefined> {
-    return (await cookies()).get(SFDC_AUTH_TOKEN_COOKIE_NAME)?.value || undefined;
+    return undefined // (await cookies()).get(SFDC_AUTH_TOKEN_COOKIE_NAME)?.value || undefined;
 }
 
 export async function getCsrfTokenFromCookie(): Promise<string | null> {
-    const cookie = (await cookies()).get(CSRF_TOKEN_COOKIE_NAME)?.value;
+    const cookie = null // (await cookies()).get(CSRF_TOKEN_COOKIE_NAME)?.value;
     if (!cookie) return null;
     return decode(cookie);
 }
 
 export async function updateIsGuestUserToDefaultInCookie() {
-    (await cookies()).set(IS_GUEST_USER_COOKIE_NAME, JSON.stringify(true));
+    // (await cookies()).set(IS_GUEST_USER_COOKIE_NAME, JSON.stringify(true));
 }
 
 export async function getIsGuestUserFromCookie(): Promise<boolean | null> {
     const isGuestUser = null;
-    const cookie = (await cookies()).get(IS_GUEST_USER_COOKIE_NAME)?.value;
+    const cookie = null // (await cookies()).get(IS_GUEST_USER_COOKIE_NAME)?.value;
     if (!cookie) return isGuestUser;
     try {
         return JSON.parse(cookie);
@@ -30,19 +30,19 @@ export async function getIsGuestUserFromCookie(): Promise<boolean | null> {
 }
 
 export async function deleteSfdcAuthToken(): Promise<void> {
-    (await cookies()).delete(SFDC_AUTH_TOKEN_COOKIE_NAME);
+    // (await cookies()).delete(SFDC_AUTH_TOKEN_COOKIE_NAME);
 }
 
 export async function deleteGuestCartSessionIdCookie(): Promise<void> {
-    (await cookies()).delete(SFDC_GUEST_CART_SESSION_ID_COOKIE_NAME);
+    // (await cookies()).delete(SFDC_GUEST_CART_SESSION_ID_COOKIE_NAME);
 }
 
 export async function deleteCartIdCookie(): Promise<void> {
-    (await cookies()).delete(CART_ID_COOKIE_NAME);
+    // (await cookies()).delete(CART_ID_COOKIE_NAME);
 }
 
 export async function deleteCsrfTokenCookie(): Promise<void> {
-    (await cookies()).delete(CSRF_TOKEN_COOKIE_NAME);
+    // (await cookies()).delete(CSRF_TOKEN_COOKIE_NAME);
 }
 
 export function generateGuestUuid() {
@@ -50,19 +50,19 @@ export function generateGuestUuid() {
 }
 
 export async function getGuestEssentialUuidFromCookie(): Promise<string | null> {
-    const cookie = (await cookies()).get(SFDC_GUEST_ESSENTIAL_ID_COOKIE_NAME)?.value;
+    const cookie = null // (await cookies()).get(SFDC_GUEST_ESSENTIAL_ID_COOKIE_NAME)?.value;
     if (!cookie) return null;
     return cookie;
 }
 
 export async function getCartIdFromCookie(): Promise<string | null> {
-    const cookie = (await cookies()).get(CART_ID_COOKIE_NAME)?.value;
+    const cookie = null // (await cookies()).get(CART_ID_COOKIE_NAME)?.value;
     if (!cookie) return null;
     return cookie;
 }
 
 export async function setCartIdInCookie(cartId: string) {
-    (await cookies()).set('cartId', cartId);
+    // (await cookies()).set('cartId', cartId);
 }
 
 /**

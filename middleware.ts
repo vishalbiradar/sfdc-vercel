@@ -1,4 +1,4 @@
-import { deleteCsrfTokenCookie, deleteSfdcAuthToken, generateGuestUuid } from 'app/api/auth/authUtil';
+import { generateGuestUuid } from 'app/api/auth/authUtil';
 import { CSRF_TOKEN_COOKIE_NAME, GUEST_COOKIE_AGE, IS_GUEST_USER_COOKIE_NAME, SFDC_AUTH_TOKEN_COOKIE_NAME, SFDC_GUEST_ESSENTIAL_ID_COOKIE_NAME, } from 'lib/constants';
 import { fetchSessionContextDetails } from 'lib/sfdc';
 import { NextRequest, NextResponse } from 'next/server';
@@ -23,8 +23,8 @@ export async function middleware(req: NextRequest) {
 
   // Scenario 1: Auth token exists but session is invalid (i.e. user is actually guest)
   if (authToken && isGuestUserRes) {
-    await deleteSfdcAuthToken();
-    await deleteCsrfTokenCookie();
+    // await deleteSfdcAuthToken();
+    // await deleteCsrfTokenCookie();
 
     res.cookies.delete(SFDC_AUTH_TOKEN_COOKIE_NAME);
     res.cookies.delete(CSRF_TOKEN_COOKIE_NAME);
